@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import RadioGroup from 'react-native-radio-buttons-group';
+import { View, Text, TextInput, Image, TouchableOpacity, FlatList, Alert } from 'react-native';
 import {styles} from './styles';
-
-//import todoLogo from '../../../assets/Logo.png';
 
 export default function Todo() {
 
+  const [items, setItems ] = useState<string[]>([]);
+  const [item, setItem] = useState('');  
 
   function handleItemAdd() {
-    console.log('add');
+    //console.log(items);
+    setItems(prevState => [...prevState, item]);
+
+    setItem('');
+    
   }
 
-  const [radioButtons, setRadioButtons] = useState([
-    {
-        id: '1', // acts as primary key, should be unique and non-empty string
-        label: 'Option 1',
-        value: 'option1'
-    },
-    {
-        id: '2',
-        label: 'Option 2',
-        value: 'option2'
-    }
-]);
+
+  function handleItemRemove(name: string) {
+    Alert.alert('Remove',`Remove o todo ${name}?`,[
+      {
+        text: 'Yes',
+        onPress: () => setItems(prevState => prevState.filter(it => it !== name))
+      },
+      {
+        text: 'No',
+        style: 'cancel'
+      }
+    ]);
+  }      
 
   return (
     
@@ -37,30 +41,98 @@ export default function Todo() {
 
         <TextInput 
           style={styles.input}
-          placeholder="Add todo">
-        </TextInput>
+          placeholder="Add todo"
+          onChangeText={e => setItem(e)} 
+          value={item} 
+        />
 
         <TouchableOpacity
           onPress={handleItemAdd}> 
           <Image 
-           
             source={require('../../../assets/Button.png')}
           />
         </TouchableOpacity>
 
       </View>
 
-      <View>
-        <View style={styles.itemradio}>
-          <RadioGroup 
-            radioButtons={radioButtons}
+      <FlatList 
+        data={items}
+        keyExtractor={item => item}
+        renderItem={({item}) => (
+
+          <View style={styles.itemradio}>
+          <TouchableOpacity> 
+          <Image 
+            source={require('../../../assets/VectorOff.png')}
           />
-          <Text style={styles.item}>Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 </Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.itemtext}>{item}</Text>
+
+          <TouchableOpacity
+           onPress={()=>handleItemRemove(item)}> 
+          <Image style={styles.trash} 
+            source={require('../../../assets/Trash.png')}
+          />
+          </TouchableOpacity>
+        </View>    
+
+        )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={()=>(
+          <Text style={styles.listEmptyText}>
+            Nenhum item adicionado ainda na sua lista!
+          </Text>
+        )}  
+        />
+
+
+      {/* <View>
+        <View style={styles.itemradio}>
+          <TouchableOpacity> 
+          <Image 
+            source={require('../../../assets/VectorOff.png')}
+          />
+          </TouchableOpacity>
+          <Text style={styles.itemtext}>Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 Item1 </Text>
+          <TouchableOpacity> 
+          <Image style={styles.trash} 
+            source={require('../../../assets/Trash.png')}
+          />
+          </TouchableOpacity>
         </View>
 
-        <Text style={styles.item}>Item2 Item2 Item2 Item2 Item2 Item2 Item2 Item2 Item2 Item2 </Text>
-        <Text style={styles.item}>Item3 Item3 Item3 Item3 Item3 Item3 Item3 Item3 Item3 Item3 </Text>
-      </View>
+        <View style={styles.itemradio}>
+          <TouchableOpacity> 
+          <Image 
+            source={require('../../../assets/VectorOff.png')}
+          />
+          </TouchableOpacity>
+          
+          <Text style={styles.itemtext}>Item2 </Text>
+
+          <TouchableOpacity> 
+          <Image style={styles.trash} 
+            source={require('../../../assets/Trash.png')}
+          />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.itemradio}>
+          <TouchableOpacity> 
+          <Image 
+            source={require('../../../assets/VectorOn.png')}
+          />
+          </TouchableOpacity>
+          <Text style={styles.itemtext}>xxxxxx xxxxxxx </Text>
+          <TouchableOpacity> 
+          <Image style={styles.trash} 
+            source={require('../../../assets/Trash.png')}
+          />
+          </TouchableOpacity>
+        </View>
+
+      </View> */}
       
     </View>  
     

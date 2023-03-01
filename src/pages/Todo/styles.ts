@@ -24,12 +24,26 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 10
   },
-  item: {
-    color: 'white'
-  },
   itemradio: {
     color: 'white',
     flexDirection: 'row',
+    borderRadius: 5,
+    marginTop: 16,
+    marginLeft: 32
+  },
+  itemtext: {
+    width: '70%',
+    color: 'white',
+    marginLeft: 16
+  },
+  trash: {
+    marginLeft: 16,
+    marginRight: 16
+  },
+  listEmptyText: {
+    color: '#FFF',
+    fontSize: 14,
+    textAlign: 'center'
   }
     
 });
