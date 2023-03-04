@@ -41,7 +41,7 @@ export default function Todo() {
 
         <TextInput 
           style={styles.input}
-          placeholder="Add todo"
+          placeholder="Add todo now"
           onChangeText={e => setItem(e)} 
           value={item} 
         />
